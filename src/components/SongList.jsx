@@ -56,8 +56,38 @@ const mapStateToProps = (state) => {
   return { songs: state.songs };
 };
 
-// Second argument to connect function is an object
+// Second argument to connect function is an action creator
 // The connect function is going to take that selectSong action creator
 // and pass it into our Component as a prop
 
+/* The reason we aren't directly calling action creators inside our component
+ * above but instead,
+ * passing it as a second argumnet to the connect function is:
+ * */
+
+// Redux is not Magic!!
+// * Redux does not automatically detect action creators begin called.
+// * Redux does not automatically detect a function returning an object that
+// is an 'action'.
+
+// The connect function does special operation on the second argument
+// i.e functions inside that object
+// It looks at all the functions inside this object and
+// It essentially wraps them up in another JS function
+// When we call new JS function, connect function is automatically going
+// to call our action creator, it's going to automatically take the action
+// that gets returned and its going to automatically call the dispatch()
+// function for us.
+//
+// So by passing our action creator into that connect function, whenver we call
+// props.actionCreator or the action creator that gets added to our props object,
+// the connect function is going to automatically take the action that gets
+// returned and throw it into the dispatch function for us!
+//
+// So all that is happening behind the scenes and we don't really have to think
+// about it when we're making use of the connect function!
+
+// So antime we ever want to call the action creator from the component,
+// We're always going to pass it into this connect function as opposed to just
+// arbitrarily calling it directly inside the component!
 export default connect(mapStateToProps, { selectSong })(SongList);
